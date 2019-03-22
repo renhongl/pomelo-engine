@@ -19,7 +19,7 @@ export function renderBird(scene) {
   let bird = new Bird({});
   bird.moveTo(50, 50);
   bird.dx = 1;
-  bird.setAnimSpeed(5);
+  bird.setAnimSpeed(0.5);
   bird.w = bird.h = 80;
   bird.setAnims(anims, "run");
   scene.addRObj(bird);

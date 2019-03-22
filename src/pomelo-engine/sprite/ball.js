@@ -4,7 +4,7 @@ export class Ball extends RenderObj {
   constructor(args) {
     super(args);
     this.r = args.r || 10;
-    this.color = args.color || "white";
+    this.color = args.color || "#000";
   }
 
   update() {
@@ -27,7 +27,7 @@ export class Ball extends RenderObj {
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "#000";
     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
     ctx.stroke();
   }

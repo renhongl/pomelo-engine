@@ -8,7 +8,7 @@ export class Scene {
     this.w = args.w || 320;
     this.h = args.h || 280;
     //背景元素及其样式
-    this.color = args.color || "black";
+    this.color = args.color || "#fff";
     this.holder = document.createElement("div");
     this.holder.setAttribute("id", `sc_${this.name}`);
     this.holder.setAttribute("class", "sc_container");
@@ -47,7 +47,7 @@ export class Scene {
 
   //设置场景背景颜色
   setColor(color) {
-    this.color = color || "black";
+    this.color = color || "#fff";
     this.holder.style.backgroundColor = this.color;
   }
 
@@ -112,9 +112,10 @@ export class Scene {
   }
 
   clean() {
-    this.cvs.parentNode.removeChild(this.cvs);
-    this.holder.parentNode.removeChild(this.holder);
-    this.cvs = this.holder = this.ctx = null;
+    // this.cvs.parentNode.removeChild(this.cvs);
+    // this.holder.parentNode.removeChild(this.holder);
+    // this.cvs = this.holder = this.ctx = null;
+    this.rObjs = [];
   }
 
   //将可以展示的对象添加到该场景

@@ -15,15 +15,25 @@ body {
   position: relative;
 }
 
-#nav {
-  width: 100px;
-  float: left;
+.drawer-content {
+  width: 100%;
   height: 100%;
 }
 
-#example {
-  width: calc(100% - 100px);
-  height: 100%;
-  float: left;
+.example-content {
+  width: calc(100% - 240px);
+  height: calc(100% - 64px);
+  margin-top: 64px;
   position: relative;
+  margin-left: 240px;
+}
+
+.example-header {
+  width: calc(100% - 240px) !important;
+  margin-left: 240px !important;
+}
+
+.normal-header {
+  width: 100%;
+  margin-left: 0;
 }
