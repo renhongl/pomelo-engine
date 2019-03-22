@@ -3,9 +3,9 @@ import "./pomelo-engine/styles.css";
 
 import "./style.css";
 
-// import { renderBird } from "./example/birdExample";
-// import { renderSampleSprite } from "./example/sampleSprite";
-// import { renderBalls } from "./example/ballExample";
+import { renderBird } from "./example/birdExample";
+import { renderSampleSprite } from "./example/sampleSprite";
+import { renderBalls } from "./example/ballExample";
 
 let container = document.getElementById("example");
 let w = container.offsetWidth;
@@ -22,9 +22,9 @@ let scene = game.sceneManager.createScene({
   h
 });
 
-scene.setBGImg("/images/bg.jpg", 0);
+scene.setBGImg("images/bg.jpg", 0);
 game.run(60);
 
-// renderBalls(scene);
-// renderBird(scene);
-// renderSampleSprite(scene);
+renderBalls(scene);
+renderBird(scene);
+renderSampleSprite(scene);
