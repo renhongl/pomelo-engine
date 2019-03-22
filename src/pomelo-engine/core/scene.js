@@ -106,6 +106,8 @@ export class Scene {
       case 1:
         this.holder.style.backgroundSize = `${this.w}px, ${this.h}px`;
         break;
+      default:
+        break;
     }
   }
 
