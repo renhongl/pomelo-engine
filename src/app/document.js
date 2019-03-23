@@ -1,5 +1,5 @@
 import React from "react";
-import docs from "./document.md";
+import docs from "./document.txt";
 import hljs from "highlight.js";
 import MarkdownIt from "markdown-it";
 import "highlight.js/styles/atom-one-light.css";
