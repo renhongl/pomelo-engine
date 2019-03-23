@@ -1,21 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
-import Button from "@material-ui/core/Button";
 
 import { Game } from "../pomelo-engine/core";
 import "../pomelo-engine/styles.css";
@@ -24,6 +11,11 @@ import { renderBird } from "../example/birdExample";
 import { renderSampleSprite } from "../example/sampleSprite";
 import { renderBalls } from "../example/ballExample";
 import config from "../example/config.json";
+
+import Example from "./example";
+import Header from "./header";
+import Home from "./home";
+import Document from "./document";
 
 const drawerWidth = 240;
 
@@ -110,8 +102,8 @@ const styles = theme => ({
 
 class PermanentDrawerLeft extends React.Component {
   state = {
-    title: config[0],
-    selected: 0,
+    title: "",
+    selected: -1,
     filter: "",
     page: "home"
   };
@@ -141,7 +133,7 @@ class PermanentDrawerLeft extends React.Component {
     // this.scene.setBGImg("images/bg.jpg", 0);
     game.showFrames();
     game.run(60);
-    this.getExample(0);
+    // this.getExample(0);
   }
 
   updateFilter = e => {
@@ -185,6 +177,11 @@ class PermanentDrawerLeft extends React.Component {
         );
         break;
       case 3:
+        this.setState({
+          page: "document"
+        });
+        break;
+      case 4:
         window.location = "https://github.com/renhongl/pomelo-engine";
         break;
       default:
@@ -198,83 +195,30 @@ class PermanentDrawerLeft extends React.Component {
     return (
       <div className="drawer-content">
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={page === "example" ? "example-header" : "normal-header"}
-        >
-          <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
-              {page === "home" ? "Pomelo Engine" : title}
-            </Typography>
-            <div className={classes.grow} />
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                value={filter}
-                onChange={this.updateFilter}
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}
-              />
-            </div>
-            <Button
-              style={{ marginLeft: "5px" }}
-              color="inherit"
-              onClick={() => this.changePage(1)}
-            >
-              主页
-            </Button>
-            <Button color="inherit" onClick={() => this.changePage(2)}>
-              例子
-            </Button>
-            <Button color="inherit" onClick={() => this.changePage(3)}>
-              Github
-            </Button>
-          </Toolbar>
-        </AppBar>
+        <Header
+          title={title}
+          selected={selected}
+          filter={filter}
+          page={page}
+          classes={classes}
+          updateFilter={this.updateFilter}
+          changePage={this.changePage}
+        />
         {page === "example" ? (
-          <React.Fragment>
-            <Drawer
-              className={classes.drawer}
-              variant="permanent"
-              classes={{
-                paper: classes.drawerPaper
-              }}
-              anchor="left"
-            >
-              <div className={classes.toolbar}>
-                <h2 className={classes.titleName}>Pomelo Engine</h2>
-              </div>
-              <Divider />
-              <List>
-                {config
-                  .filter(item =>
-                    item.toUpperCase().includes(filter.toUpperCase())
-                  )
-                  .map((text, index) => (
-                    <ListItem
-                      button
-                      key={text}
-                      selected={selected === index}
-                      onClick={() => this.onNavClick(index)}
-                    >
-                      <ListItemIcon>
-                        <InboxIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={text} />
-                    </ListItem>
-                  ))}
-              </List>
-            </Drawer>
-            <main className="example-content" />
-          </React.Fragment>
+          <Example
+            selected={selected}
+            onNavClick={this.onNavClick}
+            filter={filter}
+            classes={classes}
+            config={config}
+            changePage={this.changePage}
+          />
+        ) : page === "home" ? (
+          <Home changePage={this.changePage} />
         ) : (
-          <div>home page</div>
+          <Document />
         )}
+        <footer>Copyright &#169; pomelo</footer>
       </div>
     );
   }
