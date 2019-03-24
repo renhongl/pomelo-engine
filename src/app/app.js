@@ -10,12 +10,12 @@ import "../style.css";
 import { renderBird } from "../example/birdExample";
 import { renderSampleSprite } from "../example/sampleSprite";
 import { renderBalls } from "../example/ballExample";
-import config from "../example/config.json";
+import { exampleList } from "./config/global";
 
-import Example from "./example";
-import Header from "./header";
-import Home from "./home";
-import Document from "./document";
+import Example from "./component/example";
+import Header from "./component/header";
+import Home from "./component/home";
+import Document from "./component/document";
 
 const drawerWidth = 240;
 
@@ -110,7 +110,7 @@ class PermanentDrawerLeft extends React.Component {
   onNavClick = index => {
     this.getExample(Number(index));
     this.setState({
-      title: config[index],
+      title: exampleList[index],
       selected: index
     });
   };
@@ -210,7 +210,7 @@ class PermanentDrawerLeft extends React.Component {
             onNavClick={this.onNavClick}
             filter={filter}
             classes={classes}
-            config={config}
+            exampleList={exampleList}
             changePage={this.changePage}
           />
         ) : page === "home" ? (

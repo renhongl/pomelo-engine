@@ -15,7 +15,7 @@ export default class Example extends React.Component {
       filter,
       selected,
       onNavClick,
-      config,
+      exampleList,
       changePage
     } = this.props;
     return (
@@ -39,7 +39,7 @@ export default class Example extends React.Component {
           </div>
           <Divider />
           <List>
-            {config
+            {exampleList
               .filter(item => item.toUpperCase().includes(filter.toUpperCase()))
               .map((text, index) => (
                 <ListItem
