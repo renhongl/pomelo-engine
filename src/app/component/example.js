@@ -7,8 +7,22 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
+import Fab from "@material-ui/core/Fab";
+import Icon from "@material-ui/core/Icon";
+import { ballCode, birdExampleCode, sampleSpriteCode } from "../config/global";
+import Code from "./code";
 
 export default class Example extends React.Component {
+  state = {
+    showCode: false
+  };
+
+  toggleCodeView = () => {
+    this.setState({
+      showCode: !this.state.showCode
+    });
+  };
+
   render() {
     const {
       classes,
@@ -57,6 +71,20 @@ export default class Example extends React.Component {
           </List>
         </Drawer>
         <main className="example-content" />
+        {this.state.showCode ? (
+          <div className="code-view">
+            <h4>Example Resouce Code</h4>
+            <Code content={ballCode} />
+          </div>
+        ) : null}
+        <Fab
+          color="primary"
+          aria-label="Add"
+          className="code-view-btn"
+          onClick={this.toggleCodeView}
+        >
+          <Icon>code</Icon>
+        </Fab>
       </React.Fragment>
     );
   }

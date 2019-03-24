@@ -40,7 +40,12 @@ export default class Home extends React.Component {
               <br />
               <code>$ import * as engine from 'pomelo-engine'</code>
             </div>
-            <Button variant="outlined" color="primary" size="large">
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              onClick={() => changePage(3)}
+            >
               Read the installation docs >
             </Button>
           </div>
