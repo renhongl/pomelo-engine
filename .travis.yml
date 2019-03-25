@@ -8,7 +8,7 @@ cache:
 install: npm install
 
 before_deploy:
-  cd src/pomelo-engine
+  cd pomelo-engine
 
 script:
   - npm run build
