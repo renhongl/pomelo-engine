@@ -1,8 +1,27 @@
-export const docs = `# Documentation for Pomelo Engine
+export const install = `# Installation
 
-  Powered by pomelo
+* NPM 
+
+  \`\`\`js
+  npm install pomelo-engine --save
   
-  ## Get Started
+  import { Game } from 'pomelo-engine/core';
+  
+  import 'pomelo-engine/styles.css';
+  \`\`\`
+* HTML
+
+  * Download source code from download page.
+  
+  * Copy **pomelo-engine** folder to your library.
+
+  * Add **script** for your html, link to: **path/to/pomelo-engine/core/index.js**.
+
+  * Add **script** for your html, link to: **path/to/pomelo-engine/sprite/index.js**.
+`;
+
+export const getStarted = `
+  # Get Started
   
   1. Create Game.
   
@@ -36,6 +55,31 @@ export const docs = `# Documentation for Pomelo Engine
      //Run game with 60 fps.
      game.run(60);
      \`\`\`
+`;
+
+export const coreConcept = `
+# Core Concept
+
+## Game
+* Game containes the whole thing about game.
+
+## Scene
+
+* One story will has one scene.
+
+* Containes one seperate story.
+
+## RenderObj
+* It is a object.
+
+* Including render and update function.
+
+* So it can render on the scene.
+
+## Sprite
+* It is implement from **RenderObj**.
+
+* It has frame animation, so you can the a bird is flying, a dog is running.
 `;
 
 export const ballCode = `

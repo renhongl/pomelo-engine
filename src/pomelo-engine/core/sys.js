@@ -35,5 +35,15 @@ export const FrameState = {
     }
     this.elapseTime = fTime - this.currTime;
     this.currTime = fTime;
+  },
+
+  clear() {
+    this.maxFrame = 0;
+    this.minFrame = 9999;
+    this.currFrame = 0;
+    this.currTime = 0;
+    this.elapseTime = 0;
+    this._sTime = 0;
+    this._sTFrame = 0;
   }
 };

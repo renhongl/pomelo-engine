@@ -105,7 +105,8 @@ class PermanentDrawerLeft extends React.Component {
     title: "",
     selected: -1,
     filter: "",
-    page: "home"
+    page: "home",
+    docNumber: "1"
   };
   onNavClick = index => {
     this.getExample(Number(index));
@@ -117,6 +118,7 @@ class PermanentDrawerLeft extends React.Component {
 
   showExample() {
     let container = document.querySelector(".example-content");
+    container.innerHTML = "";
     if (!container) {
       return;
     }
@@ -133,6 +135,7 @@ class PermanentDrawerLeft extends React.Component {
     // this.scene.setBGImg("images/bg.jpg", 0);
     game.showFrames();
     game.run(60);
+    this.game = game;
     // this.getExample(0);
   }
 
@@ -159,7 +162,16 @@ class PermanentDrawerLeft extends React.Component {
     }
   }
 
+  changeDocNumber = num => {
+    this.setState({
+      docNumber: num
+    });
+  };
+
   changePage = index => {
+    this.setState({
+      selected: -1
+    });
     switch (index) {
       case 1:
         this.setState({
@@ -172,6 +184,9 @@ class PermanentDrawerLeft extends React.Component {
             page: "example"
           },
           () => {
+            if (this.game) {
+              this.game.stop();
+            }
             this.showExample();
           }
         );
@@ -191,7 +206,7 @@ class PermanentDrawerLeft extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { title, selected, filter, page } = this.state;
+    const { title, selected, filter, page, docNumber } = this.state;
     return (
       <div className="drawer-content">
         <CssBaseline />
@@ -214,11 +229,16 @@ class PermanentDrawerLeft extends React.Component {
             changePage={this.changePage}
           />
         ) : page === "home" ? (
-          <Home changePage={this.changePage} />
+          <Home
+            changePage={this.changePage}
+            changeDocNumber={this.changeDocNumber}
+          />
         ) : (
-          <Document />
+          <Document
+            docNumber={docNumber}
+            changeDocNumber={this.changeDocNumber}
+          />
         )}
-        <footer>Copyright &#169; pomelo</footer>
       </div>
     );
   }

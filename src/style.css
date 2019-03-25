@@ -55,7 +55,7 @@ h6 {
 
 .normal-content {
   width: 100%;
-  height: calc(100% - 94px);
+  height: calc(100% - 64px);
   margin-top: 64px;
   position: relative;
   overflow: auto;
@@ -126,7 +126,7 @@ h6 {
 
 .home-bottom-nav > div {
   color: #5d5d5d;
-  line-height: 40px;
+  line-height: 30px;
 }
 
 .home-bottom-nav > button {
@@ -136,6 +136,8 @@ h6 {
 footer {
   font-size: 12px;
   padding-left: 50px;
+  height: 50px;
+  line-height: 50px;
 }
 
 .example-page-header {
@@ -147,7 +149,7 @@ footer {
 
 #content {
   width: 60%;
-  margin: 120px auto;
+  margin: 20px auto;
 }
 
 pre.hljs {
@@ -161,13 +163,15 @@ pre.hljs {
   position: fixed;
   right: 40px;
   bottom: 40px;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
 }
 
 .code-view-btn {
   position: fixed !important;
   right: 20px;
   bottom: 20px;
+  z-index: 11;
 }
 
 .code-view #content {

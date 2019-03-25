@@ -62,6 +62,7 @@ export class Game {
   //停止游戏
   stop() {
     clearInterval(this.tHand);
+    FrameState.clear();
   }
 
   showFrames() {

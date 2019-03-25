@@ -23,6 +23,20 @@ export default class Example extends React.Component {
     });
   };
 
+  getCodeView() {
+    const { selected } = this.props;
+    switch (selected) {
+      case 0:
+        return <Code content={sampleSpriteCode} />;
+      case 1:
+        return <Code content={ballCode} />;
+      case 2:
+        return <Code content={birdExampleCode} />;
+      default:
+        <Code content={ballCode} />;
+    }
+  }
+
   render() {
     const {
       classes,
@@ -74,7 +88,7 @@ export default class Example extends React.Component {
         {this.state.showCode ? (
           <div className="code-view">
             <h4>Example Resouce Code</h4>
-            <Code content={ballCode} />
+            {this.getCodeView()}
           </div>
         ) : null}
         <Fab

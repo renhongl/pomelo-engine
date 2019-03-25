@@ -4,7 +4,7 @@ import Icon from "@material-ui/core/Icon";
 
 export default class Home extends React.Component {
   render() {
-    const { changePage } = this.props;
+    const { changePage, changeDocNumber } = this.props;
     return (
       <div className="normal-content">
         <div className="home-top">
@@ -38,13 +38,16 @@ export default class Home extends React.Component {
             <div>
               <code>$ npm install pomelo-engine</code>
               <br />
-              <code>$ import * as engine from 'pomelo-engine'</code>
+              <code>{`$ import { Game } from 'pomelo-engine'`}</code>
             </div>
             <Button
               variant="outlined"
               color="primary"
               size="large"
-              onClick={() => changePage(3)}
+              onClick={() => {
+                changePage(3);
+                changeDocNumber("1");
+              }}
             >
               Read the installation docs >
             </Button>
@@ -60,7 +63,10 @@ export default class Home extends React.Component {
               variant="outlined"
               color="primary"
               size="large"
-              onClick={() => changePage(3)}
+              onClick={() => {
+                changePage(3);
+                changeDocNumber("2");
+              }}
             >
               Go to documentation >
             </Button>
@@ -82,6 +88,7 @@ export default class Home extends React.Component {
             </Button>
           </div>
         </div>
+        <footer>Copyright &#169; pomelo</footer>
       </div>
     );
   }
