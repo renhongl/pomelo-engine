@@ -7,7 +7,7 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import { Game } from "../pomelo-engine/core";
 import "../pomelo-engine/styles.css";
 import "../style.css";
-import { exampleList, exampleListDetail } from "./config/global";
+import { exampleListDetail } from "./config/global";
 
 import Example from "./component/example";
 import Header from "./component/header";

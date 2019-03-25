@@ -1,0 +1,9 @@
+{
+  "name": "pomelo-engine-core",
+  "version": "1.0.0",
+  "description": "2d game engine implements by javascript",
+  "main": "index.js",
+  "author": "renhongl",
+  "license": "ISC",
+  "dependencies": {}
+}
