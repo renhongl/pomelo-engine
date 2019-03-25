@@ -33,7 +33,7 @@ export default class Example extends React.Component {
       case 2:
         return <Code content={birdExampleCode} />;
       default:
-        <Code content={ballCode} />;
+        return <Code content={ballCode} />;
     }
   }
 
