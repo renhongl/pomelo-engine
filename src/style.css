@@ -150,6 +150,7 @@ footer {
 #content {
   width: 60%;
   margin: 20px auto;
+  font-size: 18px;
 }
 
 pre.hljs {
@@ -177,6 +178,8 @@ pre.hljs {
 .code-view #content {
   width: 90% !important;
   margin: 0 auto !important;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .code-view > h4 {

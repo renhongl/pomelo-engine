@@ -9,7 +9,7 @@ import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import Icon from "@material-ui/core/Icon";
-import { ballCode, birdExampleCode, sampleSpriteCode } from "../config/global";
+import * as global from "../config/global";
 import Code from "./code";
 
 export default class Example extends React.Component {
@@ -25,16 +25,9 @@ export default class Example extends React.Component {
 
   getCodeView() {
     const { selected } = this.props;
-    switch (selected) {
-      case 0:
-        return <Code content={sampleSpriteCode} />;
-      case 1:
-        return <Code content={ballCode} />;
-      case 2:
-        return <Code content={birdExampleCode} />;
-      default:
-        return <Code content={ballCode} />;
-    }
+    return (
+      <Code content={global[global.exampleListDetail[selected].codeView]} />
+    );
   }
 
   render() {
@@ -68,18 +61,20 @@ export default class Example extends React.Component {
           <Divider />
           <List>
             {exampleList
-              .filter(item => item.toUpperCase().includes(filter.toUpperCase()))
-              .map((text, index) => (
+              .filter(item =>
+                item.name.toUpperCase().includes(filter.toUpperCase())
+              )
+              .map((item, index) => (
                 <ListItem
                   button
-                  key={text}
+                  key={item.name}
                   selected={selected === index}
                   onClick={() => onNavClick(index)}
                 >
                   <ListItemIcon>
                     <InboxIcon />
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={item.name} />
                 </ListItem>
               ))}
           </List>

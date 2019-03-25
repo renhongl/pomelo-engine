@@ -2,7 +2,7 @@ import { RenderObj } from "./renderObj";
 import { Scene } from "./scene";
 import { SceneManager } from "./sceneManager";
 import { EventListener } from "./event";
-import { FrameState } from "./sys";
+import { FrameState, Key } from "./sys";
 import { Game } from "./game";
 import * as utils from "./utils";
 import { Sprite } from "./sprite";
@@ -19,5 +19,6 @@ export {
   Sprite,
   Frames,
   Animations,
-  FrameCtrl
+  FrameCtrl,
+  Key
 };

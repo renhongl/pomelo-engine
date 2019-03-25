@@ -1,7 +1,7 @@
 import { Ball } from "../pomelo-engine/sprite";
 import { utils } from "../pomelo-engine/core";
 
-export function renderBalls(scene) {
+export default function(scene) {
   for (let i = 0; i < 50; i++) {
     let ball = new Ball({
       x: Math.random() * 500 + 20,

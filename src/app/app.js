@@ -7,10 +7,7 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import { Game } from "../pomelo-engine/core";
 import "../pomelo-engine/styles.css";
 import "../style.css";
-import { renderBird } from "../example/birdExample";
-import { renderSampleSprite } from "../example/sampleSprite";
-import { renderBalls } from "../example/ballExample";
-import { exampleList } from "./config/global";
+import { exampleList, exampleListDetail } from "./config/global";
 
 import Example from "./component/example";
 import Header from "./component/header";
@@ -111,7 +108,7 @@ class PermanentDrawerLeft extends React.Component {
   onNavClick = index => {
     this.getExample(Number(index));
     this.setState({
-      title: exampleList[index],
+      title: exampleListDetail[index].name,
       selected: index
     });
   };
@@ -132,11 +129,9 @@ class PermanentDrawerLeft extends React.Component {
       w,
       h
     });
-    // this.scene.setBGImg("images/bg.jpg", 0);
     game.showFrames();
     game.run(60);
     this.game = game;
-    // this.getExample(0);
   }
 
   updateFilter = e => {
@@ -147,19 +142,9 @@ class PermanentDrawerLeft extends React.Component {
 
   getExample(index) {
     this.scene.clean();
-    switch (index) {
-      case 0:
-        renderSampleSprite(this.scene);
-        break;
-      case 1:
-        renderBalls(this.scene);
-        break;
-      case 2:
-        renderBird(this.scene);
-        break;
-      default:
-        break;
-    }
+    import(`../example/${exampleListDetail[index].path}.js`).then(example => {
+      example.default(this.scene);
+    });
   }
 
   changeDocNumber = num => {
@@ -225,7 +210,7 @@ class PermanentDrawerLeft extends React.Component {
             onNavClick={this.onNavClick}
             filter={filter}
             classes={classes}
-            exampleList={exampleList}
+            exampleList={exampleListDetail}
             changePage={this.changePage}
           />
         ) : page === "home" ? (

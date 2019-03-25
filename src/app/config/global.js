@@ -152,4 +152,25 @@ export function renderSampleSprite(scene) {
 \`\`\`
 `;
 
-export const exampleList = ["Sample Object", "Ball Object", "Bird Sprite"];
+export const exampleListDetail = [
+  {
+    name: "Sample Object",
+    path: "sampleSprite",
+    codeView: "sampleSpriteCode"
+  },
+  {
+    name: "Ball Object",
+    path: "ballExample",
+    codeView: "ballCode"
+  },
+  {
+    name: "Bird Sprite",
+    path: "birdExample",
+    codeView: "birdExampleCode"
+  },
+  {
+    name: "Key Control",
+    path: "keyControl",
+    codeView: "sampleSpriteCode"
+  }
+];
