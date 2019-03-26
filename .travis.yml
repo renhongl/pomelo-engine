@@ -7,13 +7,18 @@ cache:
 
 install: npm install
 
-script:
-  - npm run build
-
 deploy:
-  - provider: pages
+  -  provider: pages
+    script: npm run build
     skip_cleanup: true
     github_token: $token
     local_dir: build
     on:
       branch: master
+  - provider: npm
+    email: liangrenhong2017@gmail.com
+    api_key: $NPM_TOKEN
+    skip_cleanup: true
+    on:
+      branch: production
+      tags: on
