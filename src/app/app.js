@@ -113,27 +113,6 @@ class PermanentDrawerLeft extends React.Component {
     });
   };
 
-  showExample() {
-    let container = document.querySelector(".example-content");
-    container.innerHTML = "";
-    if (!container) {
-      return;
-    }
-    let w = container.offsetWidth;
-    let h = container.offsetHeight;
-    let game = new Game({ container });
-    this.scene = game.sceneManager.createScene({
-      name: "title",
-      x: 30,
-      y: 10,
-      w,
-      h
-    });
-    game.showFrames();
-    game.run(60);
-    this.game = game;
-  }
-
   updateFilter = e => {
     this.setState({
       filter: e.target.value
@@ -141,10 +120,11 @@ class PermanentDrawerLeft extends React.Component {
   };
 
   getExample(index) {
-    this.scene.clean();
     let path = exampleListDetail[index].path;
     import(`../example/${path}.js`).then(example => {
-      example.default(this.scene);
+      let e = new example.default(this.container);
+      e.init();
+      e.render();
     });
   }
 
@@ -170,10 +150,10 @@ class PermanentDrawerLeft extends React.Component {
             page: "example"
           },
           () => {
-            if (this.game) {
-              this.game.stop();
+            if (this.container) {
+              this.container.innerHTML = "";
             }
-            this.showExample();
+            this.container = document.querySelector(".example-content");
           }
         );
         break;

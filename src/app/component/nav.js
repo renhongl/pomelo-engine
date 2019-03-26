@@ -7,6 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import { docsDetail } from "../config/global";
 
 const styles = theme => ({
   root: {
@@ -24,7 +25,7 @@ const styles = theme => ({
 
 class NestedList extends React.Component {
   state = {
-    open: false
+    open: true
   };
 
   handleClick = () => {
@@ -35,43 +36,69 @@ class NestedList extends React.Component {
     this.props.changeDocNumber(e.currentTarget.getAttribute("value"));
   };
 
+  getTitle = value => {
+    value = value.split("-");
+    let title = "";
+    if (value.length === 1) {
+      title = global[global.docsDetail[value[0]].title];
+    } else {
+      title = global[global.docsDetail[value[0]].children[value[1]].title];
+    }
+    return title;
+  };
+
   render() {
     const { classes, docNumber } = this.props;
     return (
       <List component="nav" className={classes.root}>
-        <ListItem
-          selected={"1" === docNumber}
-          button
-          value="1"
-          onClick={this.getDocNumber}
-        >
-          <ListItemText primary="Installation" />
-        </ListItem>
-        <ListItem
-          selected={"2" === docNumber}
-          button
-          value="2"
-          onClick={this.getDocNumber}
-        >
-          <ListItemText primary="Get Started" />
-        </ListItem>
-        <ListItem button onClick={this.handleClick} value="3">
-          <ListItemText primary="Full Docs" />
-          {this.state.open ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem
-              selected={"3-1" === docNumber}
-              button
-              className={classes.nested}
-              value="3-1"
-              onClick={this.getDocNumber}
-            >
-              <ListItemText primary="Core Concepts" />
-            </ListItem>
-          </List>
-        </Collapse>
+        {Object.keys(docsDetail).map((value, i) => {
+          if (docsDetail[value].children.length === 0) {
+            return (
+              <ListItem
+                selected={value === docNumber}
+                button
+                key={i}
+                value={value}
+                onClick={this.getDocNumber}
+              >
+                <ListItemText primary={docsDetail[value].title} />
+              </ListItem>
+            );
+          } else {
+            return (
+              <React.Fragment key={i}>
+                <ListItem button onClick={this.handleClick} value={value}>
+                  <ListItemText primary={docsDetail[value].title} />
+                  {this.state.open ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {Object.keys(docsDetail[value].children).map(
+                      (chilValue, index) => {
+                        return (
+                          <ListItem
+                            selected={value + "-" + chilValue === docNumber}
+                            button
+                            key={index}
+                            className={classes.nested}
+                            value={value + "-" + chilValue}
+                            onClick={this.getDocNumber}
+                          >
+                            <ListItemText
+                              primary={
+                                docsDetail[value].children[chilValue].title
+                              }
+                            />
+                          </ListItem>
+                        );
+                      }
+                    )}
+                  </List>
+                </Collapse>
+              </React.Fragment>
+            );
+          }
+        })}
       </List>
     );
   }

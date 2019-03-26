@@ -1,11 +1,14 @@
 import { SampleSprite } from "../pomelo-engine/sprite";
+import BaseExample from "./example";
 
-export default function(scene) {
-  let sampleSprite = new SampleSprite({
-    x: 40,
-    y: 40,
-    w: 200,
-    h: 200
-  });
-  scene.addRObj(sampleSprite);
+export default class Example extends BaseExample {
+  render() {
+    let sampleSprite = new SampleSprite({
+      x: 40,
+      y: 40,
+      w: 200,
+      h: 200
+    });
+    this.scene.addRObj(sampleSprite);
+  }
 }

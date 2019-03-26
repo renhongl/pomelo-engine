@@ -37,11 +37,13 @@ export default class Home extends React.Component {
           <div className="home-bottom-nav">
             <Icon>cloud_download</Icon>
             <h4>Installation</h4>
-            <div>Download this library by click download button.</div>
+            <div>
+              Download this library by npm, then import to your project.
+            </div>
             <div>
               <code>$ npm install pomelo-engine</code>
               <br />
-              <code>{`$ import { Game } from 'pomelo-engine'`}</code>
+              <code>{`$ import { Game } from 'pomelo-engine/core'`}</code>
             </div>
             <Button
               variant="outlined"

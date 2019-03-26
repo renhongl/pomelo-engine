@@ -2,22 +2,34 @@ export const install = `# Installation
 
 * NPM 
 
-  \`\`\`js
-  npm install pomelo-engine --save
+
+  * Install pomelo-engine package from npm.
+
+      \`$ npm install pomelo-engine --save\`
+      
+  * Import pomelo-engine source code to your project. 
+
+    \`\`\`js
+
+    import { Game } from 'pomelo-engine/core';
+    
+    import { Ball } from 'pomelo-engine/sprite';
+
+    import 'pomelo-engine/styles.css';
+    
+    \`\`\`
   
-  import { Game } from 'pomelo-engine/core';
-  
-  import 'pomelo-engine/styles.css';
-  \`\`\`
 * HTML
 
   * Download source code from download page.
-  
+
   * Copy **pomelo-engine** folder to your library.
 
-  * Add **script** for your html, link to: **path/to/pomelo-engine/core/index.js**.
+  * Add **script** element for your html, link to: **path/to/pomelo-engine/core/index.js**.
 
-  * Add **script** for your html, link to: **path/to/pomelo-engine/sprite/index.js**.
+  * Add **script** element for your html, link to: **path/to/pomelo-engine/sprite/index.js**.
+  
+  * Add **style** element for your html, link to **path/to/pomelo-engine/styles.css**.
 `;
 
 export const getStarted = `
@@ -58,7 +70,7 @@ export const getStarted = `
 `;
 
 export const coreConcept = `
-# Core Concept
+# Core Concepts
 
 ## Game
 * Game containes the whole thing about game.
@@ -79,7 +91,7 @@ export const coreConcept = `
 ## Sprite
 * It is implement from **RenderObj**.
 
-* It has frame animation, so you can the a bird is flying, a dog is running.
+* It has frame animation, so you can see a bird is flying, a dog is running.
 `;
 
 export const ballCode = `
@@ -152,6 +164,22 @@ export function renderSampleSprite(scene) {
 \`\`\`
 `;
 
+export const keyControl = `
+\`\`\`js
+import { Stick } from "../pomelo-engine/sprite";
+
+export default function(scene) {
+  let stick = new Stick({
+    x: 100,
+    y: 200,
+    w: 50,
+    h: 10
+  });
+  scene.addRObj(stick);
+}
+\`\`\`
+`;
+
 export const exampleListDetail = [
   {
     name: "Sample Object",
@@ -171,6 +199,67 @@ export const exampleListDetail = [
   {
     name: "Key Control",
     path: "keyControl",
-    codeView: "sampleSpriteCode"
+    codeView: "keyControl"
+  },
+  {
+    name: "Ball Game",
+    path: "ballGame",
+    codeView: "keyControl"
   }
 ];
+
+export const docsDetail = {
+  "1": {
+    title: "Installation",
+    content: "install",
+    children: []
+  },
+  "2": {
+    title: "Get Started",
+    content: "getStarted",
+    children: []
+  },
+  "3": {
+    title: "Full Docs",
+    content: "install",
+    children: {
+      "1": {
+        title: "Core Concepts",
+        content: "coreConcept",
+        children: []
+      },
+      "2": {
+        title: "Create Your Sprite",
+        content: "ownSprit",
+        children: []
+      },
+      "3": {
+        title: "test",
+        content: "test",
+        children: []
+      }
+    }
+  }
+};
+
+export const test = "test";
+
+export const ownSprit = `
+# Create Your Own Sprite
+
+
+  \`\`\`js
+  import { Sprite } from 'pomelo-engine/core';
+
+  class Bird extends Sprite {
+      render() {
+          // Your custom render function
+      }
+
+      update() {
+          // Your custom update function
+      }
+  }
+
+  \`\`\`
+`;
