@@ -24,7 +24,10 @@ export default class Home extends React.Component {
               color="primary"
               size="large"
               style={{ marginLeft: 5 }}
-              onClick={() => changePage(3)}
+              onClick={() => {
+                changePage(3);
+                changeDocNumber("2");
+              }}
             >
               Get Started >
             </Button>

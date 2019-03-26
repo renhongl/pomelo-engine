@@ -25,9 +25,13 @@ export default class Example extends React.Component {
 
   getCodeView() {
     const { selected } = this.props;
-    return (
-      <Code content={global[global.exampleListDetail[selected].codeView]} />
-    );
+    let code = "";
+    try {
+      code = global[global.exampleListDetail[selected].codeView];
+    } catch (error) {
+      return null;
+    }
+    return <Code content={code} />;
   }
 
   render() {
@@ -86,14 +90,16 @@ export default class Example extends React.Component {
             {this.getCodeView()}
           </div>
         ) : null}
-        <Fab
-          color="primary"
-          aria-label="Add"
-          className="code-view-btn"
-          onClick={this.toggleCodeView}
-        >
-          <Icon>code</Icon>
-        </Fab>
+        {this.getCodeView() ? (
+          <Fab
+            color="primary"
+            aria-label="Add"
+            className="code-view-btn"
+            onClick={this.toggleCodeView}
+          >
+            <Icon>code</Icon>
+          </Fab>
+        ) : null}
       </React.Fragment>
     );
   }
