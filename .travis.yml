@@ -16,6 +16,7 @@ deploy:
     on:
       branch: master
   - provider: npm
+    script: true
     email: liangrenhong2017@gmail.com
     api_key: $NPM_TOKEN
     skip_cleanup: true
