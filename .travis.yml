@@ -8,7 +8,7 @@ cache:
 install: npm install
 
 deploy:
-  -  provider: pages
+  - provider: pages
     script: npm run build
     skip_cleanup: true
     github_token: $token
