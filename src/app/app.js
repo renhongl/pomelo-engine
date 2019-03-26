@@ -142,7 +142,8 @@ class PermanentDrawerLeft extends React.Component {
 
   getExample(index) {
     this.scene.clean();
-    import(`../example/${exampleListDetail[index].path}.js`).then(example => {
+    let path = exampleListDetail[index].path;
+    import(`../example/${path}.js`).then(example => {
       example.default(this.scene);
     });
   }
