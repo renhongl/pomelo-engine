@@ -7,9 +7,6 @@ cache:
 
 install: npm install
 
-# before_deploy:
-#   - cd src
-
 script:
   - npm run build
 
@@ -25,6 +22,6 @@ deploy:
     email: liangrenhong2017@gmail.com
     api_key: $NPM_TOKEN
     skip_cleanup: true
-    local_dir: src/pomelo-engine
     on:
-      branch: master
+      branch: production
+      tags: on
