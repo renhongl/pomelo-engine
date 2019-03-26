@@ -67,6 +67,12 @@ export class Game {
 
   showFrames() {
     let container = this.container;
+    try {
+      container.removeChild(document.querySelector(".max-frame-ele"));
+      container.removeChild(document.querySelector(".min-frame-ele"));
+      container.removeChild(document.querySelector(".curr-frame-ele"));
+    } catch (error) {}
+
     let maxFrameEle = document.createElement("div");
     let minFrameEle = document.createElement("div");
     let currFrameEle = document.createElement("div");

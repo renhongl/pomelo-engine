@@ -112,10 +112,10 @@ export class Scene {
   }
 
   clean() {
-    // this.cvs.parentNode.removeChild(this.cvs);
-    // this.holder.parentNode.removeChild(this.holder);
-    // this.cvs = this.holder = this.ctx = null;
-    this.rObjs = [];
+    this.cvs.parentNode.removeChild(this.cvs);
+    this.holder.parentNode.removeChild(this.holder);
+    this.cvs = this.holder = this.ctx = null;
+    // this.rObjs = [];
   }
 
   //将可以展示的对象添加到该场景

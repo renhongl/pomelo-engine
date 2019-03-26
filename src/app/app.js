@@ -120,11 +120,13 @@ class PermanentDrawerLeft extends React.Component {
   };
 
   getExample(index) {
+    if (this.e) {
+      this.e.stopGame();
+    }
     let path = exampleListDetail[index].path;
     import(`../example/${path}.js`).then(example => {
-      let e = new example.default(this.container);
-      e.init();
-      e.render();
+      this.e = new example.default(this.container);
+      this.e.init();
     });
   }
 
@@ -150,9 +152,6 @@ class PermanentDrawerLeft extends React.Component {
             page: "example"
           },
           () => {
-            if (this.container) {
-              this.container.innerHTML = "";
-            }
             this.container = document.querySelector(".example-content");
           }
         );

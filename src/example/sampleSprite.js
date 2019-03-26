@@ -1,5 +1,5 @@
 import { SampleSprite } from "../pomelo-engine/sprite";
-import BaseExample from "./example";
+import BaseExample from "./baseExample";
 
 export default class Example extends BaseExample {
   render() {

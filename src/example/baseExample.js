@@ -16,7 +16,14 @@ export default class BaseExample {
       w,
       h
     });
+    this.game.showFrames();
+    this.game.run(60);
+    this.render();
   }
 
   render() {}
+
+  stopGame() {
+    this.game.stop();
+  }
 }
