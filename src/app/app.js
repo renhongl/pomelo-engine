@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 
-import { Game } from "../pomelo-engine/core";
 import "../pomelo-engine/styles.css";
 import "../style.css";
 import { exampleListDetail } from "./config/global";
