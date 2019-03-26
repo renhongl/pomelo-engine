@@ -6,5 +6,8 @@
   "main": "src/index.js",
   "homepage": "https://renhongl.github.io/pomelo-engine",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "scripts": {
+    "build": ""
+  }
 }
