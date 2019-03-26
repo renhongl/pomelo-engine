@@ -1,7 +1,29 @@
-import ReactDOM from "react-dom";
-import React from "react";
-import "./style.css";
+import {
+  RenderObj,
+  Scene,
+  SceneManager,
+  EventListener,
+  FrameState,
+  Game,
+  utils,
+  Sprite,
+  Frames,
+  Animations,
+  FrameCtrl,
+  Key
+} from "./core";
 
-import App from "./app/app";
-
-ReactDOM.render(<App />, document.getElementById("root"));
+export {
+  RenderObj,
+  Scene,
+  SceneManager,
+  EventListener,
+  FrameState,
+  Game,
+  utils,
+  Sprite,
+  Frames,
+  Animations,
+  FrameCtrl,
+  Key
+};
