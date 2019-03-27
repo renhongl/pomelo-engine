@@ -1,5 +1,5 @@
 import { Stick } from "../pomelo-engine/sprite";
-import { Sprite, Game, Key } from "../pomelo-engine/core";
+import { Sprite, Key } from "../pomelo-engine/core";
 import BaseExample from "./baseExample";
 
 class Ball extends Sprite {
