@@ -47,7 +47,19 @@ export class SceneManager {
     }
   }
 
+  getScene(name) {
+    return this.namedScenes[name];
+  }
+
   getCurrentScene() {
-    return this.scenes[0];
+    return this.scenes[this.scenes.length - 1];
+  }
+
+  clearAll() {
+    for (let i = 0; i < this.scenes.length; i++) {
+      this.scenes[i].clean();
+    }
+    this.namedScenes = {};
+    this.scenes = [];
   }
 }

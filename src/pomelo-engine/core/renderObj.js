@@ -2,7 +2,7 @@ export class RenderObj {
   static SID = 0;
 
   constructor(args) {
-    this.name = args.name || `Unnamed_${RenderObj.SID}`;
+    this.name = args.name || `Unnamed_${++RenderObj.SID}`;
     this.owner = args.owner || null;
     //x, y 方向坐标
     this.x = args.x || 0;

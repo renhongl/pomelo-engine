@@ -8,7 +8,8 @@ export default class Example extends BaseExample {
       x: 100,
       y: 200,
       w: 50,
-      h: 10
+      h: 10,
+      color: "#1976d2"
     });
     this.scene.addRObj(stick);
   }

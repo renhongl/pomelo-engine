@@ -25,5 +25,6 @@ export default class BaseExample {
 
   stopGame() {
     this.game.stop();
+    this.game.sceneManager.clearAll();
   }
 }

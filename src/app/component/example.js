@@ -75,9 +75,6 @@ export default class Example extends React.Component {
                   selected={selected === index}
                   onClick={() => onNavClick(index)}
                 >
-                  <ListItemIcon>
-                    <InboxIcon />
-                  </ListItemIcon>
                   <ListItemText primary={item.name} />
                 </ListItem>
               ))}
