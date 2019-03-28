@@ -8,7 +8,7 @@ and methods points.
 
 |Name|Type|Default|Description|
 |:-|:-|:-|-:|
-|name|String|Unnamed_${Scene.SID}|The name of this scens|
+|name|String|Unnamed_Scene.SID|The name of this scens|
 |x|Number|0|The x coordinate of this scene|
 |y|Number|0|The y coordinate of this scene|
 |w|Number|0|The width value of this scene|
