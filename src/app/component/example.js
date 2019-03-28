@@ -7,7 +7,7 @@ import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import Icon from "@material-ui/core/Icon";
-import * as global from "../config/global";
+import { exampleListDetail } from "../config/global";
 import Code from "./code";
 
 export default class Example extends React.Component {
@@ -23,13 +23,13 @@ export default class Example extends React.Component {
 
   getCodeView() {
     const { selected } = this.props;
-    let code = "";
     try {
-      code = global[global.exampleListDetail[selected].codeView];
+      let path = exampleListDetail[selected].codeView;
+      const result = require(`../config/${path}.js`);
+      return <Code content={result.default} />;
     } catch (error) {
       return null;
     }
-    return <Code content={code} />;
   }
 
   render() {
