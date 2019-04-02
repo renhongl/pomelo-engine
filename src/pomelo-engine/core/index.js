@@ -7,6 +7,7 @@ import { Game } from "./game";
 import * as utils from "./utils";
 import { Sprite } from "./sprite";
 import { Frames, Animations, FrameCtrl } from "./frames";
+import { Resource } from "./resource";
 
 export {
   RenderObj,
@@ -20,5 +21,6 @@ export {
   Frames,
   Animations,
   FrameCtrl,
-  Key
+  Key,
+  Resource
 };

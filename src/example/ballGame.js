@@ -175,8 +175,8 @@ class MyStick extends Stick {
     for (let i = 0; i < rObjs.length; i++) {
       if (rObjs[i].name.includes("reward")) {
         if (
-          rObjs[i].x >= minX &&
-          rObjs[i].x <= maxX &&
+          rObjs[i].x >= minX - rObjs[i].w &&
+          rObjs[i].x <= maxX + rObjs[i].w &&
           rObjs[i].y + rObjs[i].h >= minY &&
           rObjs[i].y + rObjs[i].h <= maxY
         ) {
