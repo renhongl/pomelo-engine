@@ -96,8 +96,8 @@ export class Scene {
   }
 
   //设置场景背景图片
-  setBGImg(imgURL, pattern) {
-    this.holder.style.backgroundImage = `url("${imgURL}")`;
+  setBGImg(img, pattern) {
+    this.holder.style.backgroundImage = `url("${img.src}")`;
     switch (pattern) {
       case 0:
         this.holder.style.backgroundRepeat = "no-repeat";

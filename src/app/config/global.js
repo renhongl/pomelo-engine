@@ -23,6 +23,11 @@ export const exampleListDetail = [
     name: "Ball Game",
     path: "ballGame",
     codeView: "exa-ballGame"
+  },
+  {
+    name: "Customize Loading",
+    path: "customizeLoading",
+    codeView: "exa-ballGame"
   }
 ];
 

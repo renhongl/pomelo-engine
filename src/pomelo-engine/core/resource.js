@@ -1,29 +1,52 @@
 export const Resource = {
   resMapping: {},
   con: null,
+  count: 0,
+  index: 0,
+  disable: false,
 
   _getMsgContainer() {
+    if (this.disable) {
+      return null;
+    }
     if (this.con) {
-      return this.con;
+      return {
+        con: this.con,
+        loading: this.loading,
+        text: this.text
+      };
     } else {
       this.con = document.createElement("div");
-      this.con.setAttribute("class", "pomelo-resource-loading");
+      this.loading = document.createElement("div");
+      this.loadingChild = document.createElement("div");
+      this.text = document.createElement("div");
+      this.loading.setAttribute("class", "pomelo-resource-loading");
+      this.loadingChild.setAttribute("class", "pomelo-resource-loading-child");
+      this.text.setAttribute("class", "pomelo-resource-loading-text");
+      this.con.appendChild(this.loading);
+      this.loading.appendChild(this.loadingChild);
+      this.con.appendChild(this.text);
+      this.con.setAttribute("class", "pomelo-resource-loading-con");
       document.body.appendChild(this.con);
-      return this.con;
+      return {
+        con: this.con,
+        loading: this.loading,
+        text: this.text
+      };
     }
   },
 
-  _loaded(name) {
-    let con = this._getMsgContainer();
-    con.innerText = name;
+  _loaded(desc) {
+    try {
+      let { text } = this._getMsgContainer();
+      text.innerText = desc;
+    } catch (error) {}
   },
 
   _loadImage(name, desc, src, config) {
     let img = new Image();
     img.onload = () => {
-      setTimeout(() => {
-        this._checkLoaded(name, desc, config, img);
-      }, 3000 + Math.random() * 20000);
+      this._checkLoaded(name, desc, config, img);
     };
     img.src = src;
   },
@@ -36,13 +59,14 @@ export const Resource = {
       this._loaded(desc);
     }
     this.index++;
+    this.loadingChild.style.width =
+      (this.loading.clientWidth * this.index) / this.count + "px";
     if (this.index === this.count) {
       if (config.completed) {
         config.completed();
         setTimeout(() => {
-          this._removeMsgCon();
           config.callback(this.resMapping);
-        }, 3000);
+        }, 1000);
       } else {
         this._completed(config);
       }
@@ -52,34 +76,46 @@ export const Resource = {
   _removeMsgCon() {
     if (this.con) {
       document.body.removeChild(this.con);
+      this.con = null;
     }
   },
 
   _completed(config) {
-    let con = this._getMsgContainer();
-    setTimeout(() => {
-      con.innerText = "That's all, enjoy...";
-      if (config.callback) {
+    try {
+      let { text } = this._getMsgContainer();
+      text.innerText = "That's all, enjoy...";
+    } catch (error) {}
+    if (config.callback) {
+      setTimeout(() => {
         this._removeMsgCon();
         config.callback(this.resMapping);
-      }
-    }, 3000);
+      }, 500);
+    }
   },
 
   _loadJson(name, desc, src, config) {
     fetch(src).then(res => {
-      setTimeout(() => {
-        this._checkLoaded(name, desc, config, "test");
-      }, 3000 + Math.random() * 20000);
+      res.json().then(json => {
+        this._checkLoaded(name, desc, config, json);
+      });
     });
   },
 
   _start() {
-    let con = this._getMsgContainer();
-    con.innerText = "Before start, we need prepare something...";
+    let { text } = this._getMsgContainer();
+    text.innerText = "Before start, we need prepare something...";
+  },
+
+  destory() {
+    this.disable = true;
+    this.count = 0;
+    this.index = 0;
+    this.resMapping = {};
+    this._removeMsgCon();
   },
 
   load(resources, config) {
+    this.disable = false;
     if (config.start) {
       config.start();
     } else {

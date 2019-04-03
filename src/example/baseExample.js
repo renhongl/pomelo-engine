@@ -23,8 +23,11 @@ export default class BaseExample {
 
   render() {}
 
+  destory() {}
+
   stopGame() {
     this.game.stop();
     this.game.sceneManager.clearAll();
+    this.destory();
   }
 }

@@ -46,6 +46,15 @@ export default class Example extends BaseExample {
     };
 
     Resource.load(config, {
+      start() {
+        console.log("Starting loading...");
+      },
+      loaded(name) {
+        console.log("Loaded: " + name);
+      },
+      complete() {
+        console.log("Completed loading");
+      },
       callback: callback
     });
   }
