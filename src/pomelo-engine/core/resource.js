@@ -59,8 +59,10 @@ export const Resource = {
       this._loaded(desc);
     }
     this.index++;
-    this.loadingChild.style.width =
-      (this.loading.clientWidth * this.index) / this.count + "px";
+    if (this.con) {
+      this.loadingChild.style.width =
+        (this.loading.clientWidth * this.index) / this.count + "px";
+    }
     if (this.index === this.count) {
       if (config.completed) {
         config.completed();

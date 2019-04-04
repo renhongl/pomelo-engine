@@ -9,10 +9,14 @@ import Fab from "@material-ui/core/Fab";
 import Icon from "@material-ui/core/Icon";
 import { exampleListDetail } from "../config/global";
 import Code from "./code";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 export default class Example extends React.Component {
   state = {
-    showCode: false
+    showCode: false,
+    openSnack: true
   };
 
   toggleCodeView = () => {
@@ -31,6 +35,14 @@ export default class Example extends React.Component {
       return null;
     }
   }
+
+  handleClose = () => {
+    this.setState({ openSnack: false });
+  };
+
+  openSnack = () => {
+    this.setState({ openSnack: true });
+  };
 
   render() {
     const {
@@ -71,7 +83,11 @@ export default class Example extends React.Component {
                   button
                   key={item.name}
                   selected={selected === index}
-                  onClick={() => onNavClick(index)}
+                  onClick={() => {
+                    this.handleClose();
+                    onNavClick(index);
+                    this.openSnack();
+                  }}
                 >
                   <ListItemText primary={item.name} />
                 </ListItem>
@@ -95,6 +111,36 @@ export default class Example extends React.Component {
             <Icon>code</Icon>
           </Fab>
         ) : null}
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          onClose={this.handleClose}
+          open={
+            exampleListDetail &&
+            exampleListDetail[selected] &&
+            exampleListDetail[selected].desc &&
+            this.state.openSnack
+          }
+          message={
+            (exampleListDetail &&
+              exampleListDetail[selected] &&
+              exampleListDetail[selected].desc) ||
+            ""
+          }
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={this.handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
       </React.Fragment>
     );
   }

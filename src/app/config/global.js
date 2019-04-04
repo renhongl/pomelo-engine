@@ -17,7 +17,8 @@ export const exampleListDetail = [
   {
     name: "Key Control",
     path: "keyControl",
-    codeView: "exa-keyControl"
+    codeView: "exa-keyControl",
+    desc: "Press LEFT or Right key to move it."
   },
   {
     name: "Ball Game",
@@ -27,7 +28,8 @@ export const exampleListDetail = [
   {
     name: "Customize Loading",
     path: "customizeLoading",
-    codeView: "exa-ballGame"
+    codeView: "exa-ballGame",
+    desc: "Use the resource hook function for customize loading."
   }
 ];
 

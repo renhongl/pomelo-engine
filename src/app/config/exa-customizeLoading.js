@@ -1,3 +1,4 @@
+export default `
 import { Frames, Animations, Resource } from "../pomelo-engine/core";
 import { Bird } from "../pomelo-engine/sprite";
 import BaseExample from "./baseExample";
@@ -59,3 +60,4 @@ export default class Example extends BaseExample {
     });
   }
 }
+`;
