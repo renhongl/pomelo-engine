@@ -14,7 +14,7 @@ export default `
      \`\`\`js
      import { Scene } from "pomelo-engine/core";
   
-     this.scene = game.sceneManager.createScene({
+     let scene = game.sceneManager.createScene({
        name: "title",
        x: 30,
        y: 10,
@@ -22,7 +22,7 @@ export default `
        h
      });
   
-     this.scene.setBGImg("images/bg.jpg", 0);
+     scene.setBGImg("images/bg.jpg", 0);
      \`\`\`
   
   3. Run Game
@@ -52,6 +52,6 @@ export default `
         w: 200,
         h: 200
       });
-      this.scene.addRObj(brick);
+      scene.addRObj(brick);
       \`\`\`
 `;

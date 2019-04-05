@@ -1,6 +1,6 @@
 export default `
-import { Frames, Animations, Resource } from "../pomelo-engine/core";
-import { Bird } from "../pomelo-engine/sprite";
+\`\`\`js
+import { Frames, Animations, Resource, Sprite } from "../pomelo-engine/core";
 import BaseExample from "./baseExample";
 
 const config = [
@@ -24,11 +24,35 @@ const config = [
   }
 ];
 
+export class Loading extends Sprite {
+  constructor(args) {
+    super(args);
+    this.text = args.text;
+  }
+
+  render(ctx) {
+    ctx.font = "30px Arial";
+    ctx.strokeText(this.text, 10, 50);
+  }
+}
+
+export class Bird extends Sprite {
+  update() {
+    let w = this.owner.w;
+    if (this.x < 20 || this.x > w - 20) {
+      this.dx = -this.dx;
+      this.isXFlip = this.dx < 0;
+    }
+    super.update();
+  }
+}
+
 export default class Example extends BaseExample {
   destory() {
     Resource.destory();
   }
   render() {
+    let self = this;
     const callback = resources => {
       this.scene.setBGImg(resources.world, 1);
       let runFrames = new Frames({
@@ -48,16 +72,30 @@ export default class Example extends BaseExample {
 
     Resource.load(config, {
       start() {
-        alert("Starting loading...");
+        self.loadingSc = self.game.sceneManager.createScene({
+          name: "loadingSc",
+          x: 0,
+          y: 0,
+          w: self.w,
+          h: self.h
+        });
+        self.loading = new Loading({
+          name: "loading",
+          text: "Start Loading..."
+        });
+        self.loadingSc.addRObj(self.loading);
       },
       loaded(name) {
-        alert("Loaded: " + name);
+        self.loading.text = "Loading " + name + "...";
       },
       completed() {
-        alert("Completed loading");
+        self.game.sceneManager.bringToBack("loadingSc");
       },
       callback: callback
     });
   }
 }
+
+
+\`\`\`
 `;

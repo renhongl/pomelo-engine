@@ -6,6 +6,10 @@
   top: 0;
 }
 
+.sc_container {
+  position: absolute;
+}
+
 .max-frame-ele {
   position: absolute;
   right: 10px;

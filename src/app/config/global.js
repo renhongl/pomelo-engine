@@ -1,16 +1,16 @@
 export const exampleListDetail = [
   {
-    name: "Sample Render Object",
+    name: "Render a Object",
     path: "sampleSprite",
     codeView: "exa-sampleSpriteCode"
   },
   {
-    name: "Ball Render Object",
+    name: "Render and Update Object",
     path: "ballExample",
     codeView: "exa-ballGame"
   },
   {
-    name: "Bird Sprite",
+    name: "Frame Animation and Default Loading",
     path: "birdExample",
     codeView: "exa-birdExampleCode"
   },
@@ -21,15 +21,15 @@ export const exampleListDetail = [
     desc: "Press LEFT or Right key to move it."
   },
   {
-    name: "Ball Game",
-    path: "ballGame",
-    codeView: "exa-ballGame"
+    name: "Customize Loading and Multiple Scene Control",
+    path: "customizeLoading",
+    codeView: "exa-customizeLoading"
   },
   {
-    name: "Customize Loading",
-    path: "customizeLoading",
+    name: "Ball Game",
+    path: "ballGame",
     codeView: "exa-ballGame",
-    desc: "Use the resource hook function for customize loading."
+    desc: "Press space key to start game."
   }
 ];
 

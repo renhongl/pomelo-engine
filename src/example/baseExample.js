@@ -6,15 +6,15 @@ export default class BaseExample {
   }
 
   init() {
-    let w = this.container.offsetWidth;
-    let h = this.container.offsetHeight;
+    this.w = this.container.offsetWidth;
+    this.h = this.container.offsetHeight;
     this.game = new Game({ container: this.container });
     this.scene = this.game.sceneManager.createScene({
-      name: "title",
+      name: "main",
       x: 0,
       y: 0,
-      w,
-      h
+      w: this.w,
+      h: this.h
     });
     this.game.showFrames();
     this.game.run(60);

@@ -68,7 +68,7 @@ export const Resource = {
         config.completed();
         setTimeout(() => {
           config.callback(this.resMapping);
-        }, 1000);
+        }, 500);
       } else {
         this._completed(config);
       }

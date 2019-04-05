@@ -12,6 +12,7 @@ import Code from "./code";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import Popover from "@material-ui/core/Popover";
 
 export default class Example extends React.Component {
   state = {
@@ -19,9 +20,11 @@ export default class Example extends React.Component {
     openSnack: true
   };
 
-  toggleCodeView = () => {
-    this.setState({
-      showCode: !this.state.showCode
+  toggleCodeView = e => {
+    this.setState({ anchorEl: e.currentTarget }, () => {
+      this.setState({
+        showCode: !this.state.showCode
+      });
     });
   };
 
@@ -42,6 +45,12 @@ export default class Example extends React.Component {
 
   openSnack = () => {
     this.setState({ openSnack: true });
+  };
+
+  handlePopoverClose = () => {
+    this.setState({
+      showCode: !this.state.showCode
+    });
   };
 
   render() {
@@ -94,12 +103,28 @@ export default class Example extends React.Component {
               ))}
           </List>
         </Drawer>
-        <main className="example-content" />
+        <div className="example-content">
+          <div className="default-example-view">Select to view example</div>
+        </div>
         {this.state.showCode ? (
-          <div className="code-view">
+          <Popover
+            id="simple-popper"
+            anchorEl={this.state.anchorEl}
+            open={this.state.showCode}
+            onClose={this.handlePopoverClose}
+            className="code-view-popper"
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right"
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "right"
+            }}
+          >
             <h4>Example Resouce Code</h4>
             {this.getCodeView()}
-          </div>
+          </Popover>
         ) : null}
         {this.getCodeView() ? (
           <Fab

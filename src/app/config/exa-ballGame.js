@@ -1,8 +1,45 @@
 export default `
 \`\`\`js
-import { Stick } from "../pomelo-engine/sprite";
-import { Sprite, Game, Key } from "../pomelo-engine/core";
+import { Sprite, Key, Resource } from "../pomelo-engine/core";
 import BaseExample from "./baseExample";
+
+export class End extends Sprite {
+  render(ctx) {
+    ctx.font = "30px Arial";
+    ctx.strokeText("Game Over!", 10, 50);
+  }
+}
+
+export class Stick extends Sprite {
+  constructor(args) {
+    super(args);
+    this.color = args.color;
+    this.speed = args.speed || 5;
+  }
+  render(ctx) {
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+    ctx.closePath();
+  }
+
+  update() {
+    if (Key.pressed(Key.LEFT)) {
+      this.dx = -this.speed;
+    } else if (Key.pressed(Key.RIGHT)) {
+      this.dx = this.speed;
+    } else {
+      this.dx = 0;
+    }
+    if (this.x <= 0 && Key.pressed(Key.LEFT)) {
+      this.dx = 0;
+    }
+    if (this.x + this.w >= this.owner.w && Key.pressed(Key.RIGHT)) {
+      this.dx = 0;
+    }
+    super.update();
+  }
+}
 
 class Ball extends Sprite {
   constructor(args) {
@@ -12,6 +49,7 @@ class Ball extends Sprite {
     this.stick = args.stick;
     this.state = 0;
     this.bricks = args.bricks;
+    this.game = args.game;
   }
 
   render(ctx) {
@@ -27,6 +65,9 @@ class Ball extends Sprite {
       this.dy = -3;
       this.state = 1;
     }
+    if (this.state === 2) {
+      return;
+    }
     let w = this.owner.w,
       h = this.owner.h;
 
@@ -38,7 +79,30 @@ class Ball extends Sprite {
     }
     this.ballHitStick();
     this.ballHitBricks();
+    this.ballOut();
     super.update();
+  }
+
+  ballOut() {
+    if (this.y + this.r * 2 >= this.owner.h) {
+      this.state = 2;
+      this.showOver();
+    }
+  }
+
+  showOver() {
+    let endSc = this.game.sceneManager.createScene({
+      name: "endSc",
+      x: this.game.container.clientWidth / 2 - 100,
+      y: this.game.container.clientHeight / 2 - 50,
+      w: 200,
+      h: 100
+    });
+    let end = new End({
+      name: "end"
+    });
+    endSc.addRObj(end);
+    this.game.sceneManager.bringToFront("endSc");
   }
 
   ballHitStick() {
@@ -67,75 +131,200 @@ class Ball extends Sprite {
       ) {
         this.dy = -this.dy;
         this.bricks[i].isVisible = false;
+        if (this.bricks[i].value > 1) {
+          this.generateReward(this.bricks[i]);
+        }
       }
     }
+  }
+
+  generateReward(brick) {
+    let reward = new Reward({
+      name: \`reward\${brick.x + "" + brick.y}\`,
+      x: brick.x,
+      y: brick.y,
+      w: brick.w,
+      h: brick.h,
+      dy: 1,
+      value: brick.value
+    });
+    this.owner.addRObj(reward);
   }
 }
 
 class Brick extends Sprite {
+  constructor(args) {
+    super(args);
+    this.value = args.value;
+  }
   render(ctx) {
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "#afb42b";
     ctx.fillRect(this.x, this.y, this.w, this.h);
   }
-  update() {}
+  update() {
+    super.update();
+  }
 }
 
-class BallGame extends Game {}
+class Reward extends Sprite {
+  constructor(args) {
+    super(args);
+    this.color = args.color;
+    this.value = args.value;
+  }
+  render(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+    if (this.value === 2) {
+      ctx.strokeStyle = "#fff";
+      ctx.strokeText("Reward Size", this.x, this.y + this.h / 2);
+    }
+    if (this.value === 3) {
+      ctx.strokeStyle = "#fff";
+      ctx.strokeText("Reward Speed", this.x, this.y + this.h / 2);
+    }
+  }
+  update() {
+    super.update();
+  }
+}
+
+class MyStick extends Stick {
+  constructor(args) {
+    super(args);
+    this.originW = this.w;
+    this.originSpeed = this.speed;
+  }
+  update() {
+    this.stickHitReward();
+    super.update();
+  }
+
+  resetState(status) {
+    switch (status) {
+      case 2:
+        this.w = this.originW;
+        break;
+      case 3:
+        this.speed = this.originSpeed;
+        break;
+      default:
+        break;
+    }
+  }
+
+  updateState(status) {
+    switch (status) {
+      case 2:
+        this.w = this.originW * 2;
+        setTimeout(() => {
+          this.resetState(status);
+        }, 30000);
+        break;
+      case 3:
+        this.speed = this.originSpeed * 2;
+        setTimeout(() => {
+          this.resetState(status);
+        }, 30000);
+        break;
+      default:
+        break;
+    }
+  }
+
+  stickHitReward() {
+    let rObjs = this.owner.rObjs;
+    let minX = this.x;
+    let maxX = this.x + this.w;
+    let minY = this.y;
+    let maxY = this.y + this.h;
+    for (let i = 0; i < rObjs.length; i++) {
+      if (rObjs[i].name.includes("reward")) {
+        if (
+          rObjs[i].x >= minX - rObjs[i].w &&
+          rObjs[i].x <= maxX + rObjs[i].w &&
+          rObjs[i].y + rObjs[i].h >= minY &&
+          rObjs[i].y + rObjs[i].h <= maxY
+        ) {
+          rObjs[i].isVisible = false;
+          this.updateState(rObjs[i].value);
+        }
+      }
+    }
+  }
+}
 
 export default class Example extends BaseExample {
-  init() {
-    let w = this.container.offsetWidth;
-    let h = this.container.offsetHeight;
-    this.game = new BallGame({ container: this.container });
-    this.scene = this.game.sceneManager.createScene({
-      name: "title",
-      x: 0,
-      y: 0,
-      w,
-      h
-    });
-    this.game.showFrames();
-    this.game.run(60);
-    this.render();
-  }
-  render() {
-    let bricks = [];
-    this.brickData = [
-      [1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1]
-    ];
-    let stick = new Stick({
+  getStick() {
+    let stick = new MyStick({
+      name: "stick",
       x: 100,
       y: 500,
-      w: 150,
-      h: 10
+      w: 100,
+      h: 10,
+      color: "#1976d2"
     });
-    for (let i = 0; i < this.brickData.length; i++) {
-      for (let j = 0; j < this.brickData[i].length; j++) {
+    return stick;
+  }
+
+  getBricks(brickData) {
+    let bricks = [];
+    for (let i = 0; i < brickData.length; i++) {
+      for (let j = 0; j < brickData[i].length; j++) {
         let brick = new Brick({
-          x: (100 + 5) * j + 50,
-          y: (30 + 5) * i + 50,
-          w: 100,
-          h: 30,
-          position: [i, j],
-          isVisible: Boolean(this.brickData[i][j])
+          name: \`brick\${i + "" + j}\`,
+          x: (80 + 1) * j + 20,
+          y: (20 + 1) * i + 20,
+          w: 80,
+          h: 20,
+          value: brickData[i][j],
+          isVisible: Boolean(brickData[i][j])
         });
-        this.scene.addRObj(brick);
         bricks.push(brick);
       }
     }
-    this.ball = new Ball({
-      x: 120,
-      y: 495,
+    return bricks;
+  }
+
+  getBall(stick, bricks, game) {
+    let ball = new Ball({
+      name: "ball",
+      x: stick.x + stick.w / 2,
+      y: stick.y - 5,
       r: 5,
       stick,
-      bricks
+      bricks,
+      game
     });
-    this.scene.addRObj(stick);
-    this.scene.addRObj(this.ball);
+    return ball;
+  }
+
+  render() {
+    let self = this;
+    const config = [
+      {
+        name: "brickData",
+        desc: "Render silly brickes...",
+        src: "./data/brickes.json",
+        type: "JSON"
+      }
+    ];
+    Resource.load(config, {
+      callback(resources) {
+        const { brickData } = resources;
+        self.stick = self.getStick();
+        self.bricks = self.getBricks(brickData);
+        self.ball = self.getBall(self.stick, self.bricks, self.game);
+        self.scene.addRObj(self.stick);
+        for (let i = 0; i < self.bricks.length; i++) {
+          self.scene.addRObj(self.bricks[i]);
+        }
+        self.scene.addRObj(self.ball);
+      }
+    });
   }
 }
+
+
 \`\`\`
 `;

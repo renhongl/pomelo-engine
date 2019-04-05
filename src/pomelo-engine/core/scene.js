@@ -31,8 +31,8 @@ export class Scene {
   setPos(x, y) {
     this.x = x || this.x;
     this.y = y || this.y;
-    this.holder.style.left = this.x;
-    this.holder.style.top = this.y;
+    this.holder.style.left = this.x + "px";
+    this.holder.style.top = this.y + "px";
   }
 
   //设置场景大小

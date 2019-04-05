@@ -9,7 +9,7 @@ export class SceneManager {
 
   createScene(args) {
     let sc = new Scene({ ...args, container: this.container });
-    this.scenes.push(sc);
+    this.push(sc);
     return sc;
   }
 
@@ -33,6 +33,37 @@ export class SceneManager {
     if (sc !== null) {
       sc.clean();
       delete this.namedScenes[sc.name];
+      this.sortSceneIdx();
+    }
+  }
+
+  getIndex(name) {
+    for (let i = 0; i < this.scenes.length; i++) {
+      if (name === this.scenes[i].name) {
+        return i;
+      }
+    }
+    return null;
+  }
+
+  bringToBack(name) {
+    let scenes = this.scenes;
+    let index = this.getIndex(name);
+    if (index !== 0) {
+      let temp = scenes[0];
+      scenes[0] = scenes[index];
+      scenes[index] = temp;
+      this.sortSceneIdx();
+    }
+  }
+
+  bringToFront(name) {
+    let scenes = this.scenes;
+    let index = this.getIndex(name);
+    if (index !== scenes.length - 1) {
+      let temp = scenes[scenes.length - 1];
+      scenes[scenes.length - 1] = scenes[index];
+      scenes[index] = temp;
       this.sortSceneIdx();
     }
   }

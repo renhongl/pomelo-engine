@@ -52,7 +52,14 @@ export default class Header extends React.Component {
           </div>
           <Button
             color="inherit"
-            onClick={() => changePage(2)}
+            onClick={e => {
+              if (page === "example") {
+                e.stopPropagation();
+                e.preventDefault();
+              } else {
+                changePage(2);
+              }
+            }}
             style={{ marginLeft: "5px" }}
           >
             Demos

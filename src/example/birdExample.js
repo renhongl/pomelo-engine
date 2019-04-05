@@ -1,5 +1,4 @@
-import { Frames, Animations, Resource } from "../pomelo-engine/core";
-import { Bird } from "../pomelo-engine/sprite";
+import { Frames, Animations, Resource, Sprite } from "../pomelo-engine/core";
 import BaseExample from "./baseExample";
 
 const config = [
@@ -22,6 +21,17 @@ const config = [
     type: "JSON"
   }
 ];
+
+export class Bird extends Sprite {
+  update() {
+    let w = this.owner.w;
+    if (this.x < 20 || this.x > w - 20) {
+      this.dx = -this.dx;
+      this.isXFlip = this.dx < 0;
+    }
+    super.update();
+  }
+}
 
 export default class Example extends BaseExample {
   destory() {

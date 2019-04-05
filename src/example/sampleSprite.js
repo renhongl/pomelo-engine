@@ -1,5 +1,12 @@
-import { SampleSprite } from "../pomelo-engine/sprite";
 import BaseExample from "./baseExample";
+import { RenderObj } from "../pomelo-engine/core";
+
+export class SampleSprite extends RenderObj {
+  render(ctx) {
+    ctx.fillStyle = "#1976d2";
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+  }
+}
 
 export default class Example extends BaseExample {
   render() {
