@@ -99,10 +99,11 @@ const styles = theme => ({
 class PermanentDrawerLeft extends React.Component {
   state = {
     title: "",
-    selected: -1,
+    selected: 0,
     filter: "",
     page: "home",
-    docNumber: "1"
+    docNumber: "1",
+    searchResult: []
   };
   onNavClick = index => {
     this.getExample(Number(index));
@@ -116,6 +117,10 @@ class PermanentDrawerLeft extends React.Component {
     this.setState({
       filter: e.target.value
     });
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {
+      this.updateResult();
+    }, 1000);
   };
 
   getExample(index) {
@@ -137,7 +142,7 @@ class PermanentDrawerLeft extends React.Component {
 
   changePage = index => {
     this.setState({
-      selected: -1
+      selected: 0
     });
     switch (index) {
       case 1:
@@ -168,9 +173,29 @@ class PermanentDrawerLeft extends React.Component {
     }
   };
 
+  updateResult = () => {
+    exampleListDetail.forEach((item, index) => {
+      item.index = index;
+      item.type = "Example";
+    });
+    let result = exampleListDetail.filter(item =>
+      item.name.toUpperCase().includes(this.state.filter.toUpperCase())
+    );
+    this.setState({
+      searchResult: result
+    });
+  };
+
   render() {
     const { classes } = this.props;
-    const { title, selected, filter, page, docNumber } = this.state;
+    const {
+      title,
+      selected,
+      filter,
+      page,
+      docNumber,
+      searchResult
+    } = this.state;
     return (
       <div className="drawer-content">
         <CssBaseline />
@@ -182,6 +207,8 @@ class PermanentDrawerLeft extends React.Component {
           classes={classes}
           updateFilter={this.updateFilter}
           changePage={this.changePage}
+          searchResult={searchResult}
+          onNavClick={this.onNavClick}
         />
         {page === "example" ? (
           <Example

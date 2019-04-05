@@ -53,6 +53,10 @@ export default class Example extends React.Component {
     });
   };
 
+  componentDidMount() {
+    this.props.onNavClick(this.props.selected);
+  }
+
   render() {
     const {
       classes,
@@ -83,24 +87,20 @@ export default class Example extends React.Component {
           </div>
           <Divider />
           <List>
-            {exampleList
-              .filter(item =>
-                item.name.toUpperCase().includes(filter.toUpperCase())
-              )
-              .map((item, index) => (
-                <ListItem
-                  button
-                  key={item.name}
-                  selected={selected === index}
-                  onClick={() => {
-                    this.handleClose();
-                    onNavClick(index);
-                    this.openSnack();
-                  }}
-                >
-                  <ListItemText primary={item.name} />
-                </ListItem>
-              ))}
+            {exampleList.map((item, index) => (
+              <ListItem
+                button
+                key={item.name}
+                selected={selected === index}
+                onClick={() => {
+                  this.handleClose();
+                  onNavClick(index);
+                  this.openSnack();
+                }}
+              >
+                <ListItemText primary={item.name} />
+              </ListItem>
+            ))}
           </List>
         </Drawer>
         <div className="example-content">
