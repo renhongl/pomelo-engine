@@ -8,6 +8,8 @@ import * as utils from "./utils";
 import { Sprite } from "./sprite";
 import { Frames, Animations, FrameCtrl } from "./frames";
 import { Resource } from "./resource";
+import { Audio } from "./audio";
+import { Loading } from "./loading";
 
 export {
   RenderObj,
@@ -22,5 +24,7 @@ export {
   Animations,
   FrameCtrl,
   Key,
-  Resource
+  Resource,
+  Audio,
+  Loading
 };

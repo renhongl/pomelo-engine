@@ -60,7 +60,6 @@ export default class Example extends React.Component {
   render() {
     const {
       classes,
-      filter,
       selected,
       onNavClick,
       exampleList,

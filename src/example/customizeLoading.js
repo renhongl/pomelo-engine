@@ -1,4 +1,11 @@
-import { Frames, Animations, Resource, Sprite } from "../pomelo-engine/core";
+import {
+  Frames,
+  Animations,
+  Resource,
+  Sprite,
+  Audio,
+  Loading
+} from "../pomelo-engine/core";
 import BaseExample from "./baseExample";
 
 const config = [
@@ -19,20 +26,14 @@ const config = [
     desc: "Getting nice knowloadge...",
     src: "./data/config.json",
     type: "JSON"
+  },
+  {
+    name: "audio",
+    desc: "Getting sound for world...",
+    src: "./media/horse.ogg",
+    type: "AUDIO"
   }
 ];
-
-export class Loading extends Sprite {
-  constructor(args) {
-    super(args);
-    this.text = args.text;
-  }
-
-  render(ctx) {
-    ctx.font = "30px Arial";
-    ctx.strokeText(this.text, 10, 50);
-  }
-}
 
 export class Bird extends Sprite {
   update() {
@@ -45,13 +46,74 @@ export class Bird extends Sprite {
   }
 }
 
-export default class Example extends BaseExample {
-  destory() {
-    Resource.destory();
+class LoadingContent extends Sprite {
+  constructor(args) {
+    super(args);
+    this.w = 200;
+    this.h = 20;
+    this.from = 0;
+    this.percentage = 0;
+    this.loadingSpeed = args.loadingSpeed || 10;
   }
+
+  render(ctx) {
+    ctx.fillStyle = "green";
+    ctx.fillRect(this.x, this.y, this.from, this.h);
+    ctx.strokeStyle = "blue";
+    ctx.rect(this.x, this.y, this.w, this.h);
+    ctx.stroke();
+    ctx.strokeText(
+      Number.parseInt((this.from / this.w) * 100) + "%",
+      this.x + 80,
+      this.y - 10
+    );
+  }
+
+  update() {
+    if (this.from < this.w * this.percentage) {
+      this.from += this.loadingSpeed;
+    }
+    super.update();
+  }
+}
+
+class CusLoading extends Loading {
+  start(configArr) {
+    this.container = this.game.container;
+    this.sceneName = "loadingSc";
+    this.scene = this.game.sceneManager.createScene({
+      name: this.sceneName,
+      x: 0,
+      y: 0,
+      w: this.container.clientWidth,
+      h: this.container.clientHeight
+    });
+    this.loadingContent = new LoadingContent({
+      x: this.container.clientWidth / 2 - 100,
+      y: this.container.clientHeight / 2 - 10
+    });
+    this.scene.addRObj(this.loadingContent);
+    this.game.sceneManager.bringToFront(this.sceneName);
+  }
+
+  loaded(config, source, percentage) {
+    this.loadingContent.percentage = percentage;
+  }
+
+  completed(resources) {
+    this.game.sceneManager.bringToBack(this.sceneName);
+  }
+}
+
+export default class Example extends BaseExample {
   render() {
-    let self = this;
-    const callback = resources => {
+    let cusLoading = new CusLoading();
+    let resourceMgmt = new Resource({
+      config,
+      game: this.game,
+      loading: cusLoading
+    });
+    resourceMgmt.load().then(resources => {
       this.scene.setBGImg(resources.world, 1);
       let runFrames = new Frames({
         name: "b_run",
@@ -66,30 +128,7 @@ export default class Example extends BaseExample {
       bird.setAnimSpeed(0.5);
       bird.setAnims(anims, "run");
       this.scene.addRObj(bird);
-    };
-
-    Resource.load(config, {
-      start() {
-        self.loadingSc = self.game.sceneManager.createScene({
-          name: "loadingSc",
-          x: 0,
-          y: 0,
-          w: self.w,
-          h: self.h
-        });
-        self.loading = new Loading({
-          name: "loading",
-          text: "Start Loading..."
-        });
-        self.loadingSc.addRObj(self.loading);
-      },
-      loaded(name) {
-        self.loading.text = "Loading " + name + "...";
-      },
-      completed() {
-        self.game.sceneManager.bringToBack("loadingSc");
-      },
-      callback: callback
+      Audio.play(resources.audio);
     });
   }
 }

@@ -13,12 +13,6 @@ const config = [
     desc: "Creating awesome world...",
     src: "./images/bg.jpg",
     type: "IMAGE"
-  },
-  {
-    name: "json",
-    desc: "Getting nice knowloadge...",
-    src: "./data/config.json",
-    type: "JSON"
   }
 ];
 
@@ -34,11 +28,9 @@ export class Bird extends Sprite {
 }
 
 export default class Example extends BaseExample {
-  destory() {
-    Resource.destory();
-  }
   render() {
-    const callback = resources => {
+    let resourceMgmt = new Resource({ config, game: this.game });
+    resourceMgmt.load().then(resources => {
       this.scene.setBGImg(resources.world, 1);
       let runFrames = new Frames({
         name: "b_run",
@@ -53,10 +45,6 @@ export default class Example extends BaseExample {
       bird.setAnimSpeed(0.5);
       bird.setAnims(anims, "run");
       this.scene.addRObj(bird);
-    };
-
-    Resource.load(config, {
-      callback: callback
     });
   }
 }

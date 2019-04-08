@@ -10,7 +10,7 @@ export const exampleListDetail = [
     codeView: "exa-ballGame"
   },
   {
-    name: "Frame Animation and Default Loading",
+    name: "Frame Animation",
     path: "birdExample",
     codeView: "exa-birdExampleCode"
   },
@@ -21,7 +21,7 @@ export const exampleListDetail = [
     desc: "Press LEFT or Right key to move it."
   },
   {
-    name: "Customize Loading and Multiple Scene Control",
+    name: "Resource Loading and Multiple Scene Switch",
     path: "customizeLoading",
     codeView: "exa-customizeLoading"
   },

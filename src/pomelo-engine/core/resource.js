@@ -1,141 +1,100 @@
-export const Resource = {
-  resMapping: {},
-  con: null,
-  count: 0,
-  index: 0,
-  disable: false,
+import { Loading } from "./loading";
 
-  _getMsgContainer() {
-    if (this.disable) {
-      return null;
-    }
-    if (this.con) {
-      return {
-        con: this.con,
-        loading: this.loading,
-        text: this.text
-      };
-    } else {
-      this.con = document.createElement("div");
-      this.loading = document.createElement("div");
-      this.loadingChild = document.createElement("div");
-      this.text = document.createElement("div");
-      this.loading.setAttribute("class", "pomelo-resource-loading");
-      this.loadingChild.setAttribute("class", "pomelo-resource-loading-child");
-      this.text.setAttribute("class", "pomelo-resource-loading-text");
-      this.con.appendChild(this.loading);
-      this.loading.appendChild(this.loadingChild);
-      this.con.appendChild(this.text);
-      this.con.setAttribute("class", "pomelo-resource-loading-con");
-      document.body.appendChild(this.con);
-      return {
-        con: this.con,
-        loading: this.loading,
-        text: this.text
-      };
-    }
-  },
-
-  _loaded(desc) {
-    try {
-      let { text } = this._getMsgContainer();
-      text.innerText = desc;
-    } catch (error) {}
-  },
-
-  _loadImage(name, desc, src, config) {
-    let img = new Image();
-    img.onload = () => {
-      this._checkLoaded(name, desc, config, img);
-    };
-    img.src = src;
-  },
-
-  _checkLoaded(name, desc, config, resource) {
-    this.resMapping[name] = resource;
-    if (config.loaded) {
-      config.loaded(desc);
-    } else {
-      this._loaded(desc);
-    }
-    this.index++;
-    if (this.con) {
-      this.loadingChild.style.width =
-        (this.loading.clientWidth * this.index) / this.count + "px";
-    }
-    if (this.index === this.count) {
-      if (config.completed) {
-        config.completed();
-        setTimeout(() => {
-          config.callback(this.resMapping);
-        }, 500);
-      } else {
-        this._completed(config);
-      }
-    }
-  },
-
-  _removeMsgCon() {
-    if (this.con) {
-      document.body.removeChild(this.con);
-      this.con = null;
-    }
-  },
-
-  _completed(config) {
-    try {
-      let { text } = this._getMsgContainer();
-      text.innerText = "That's all, enjoy...";
-    } catch (error) {}
-    if (config.callback) {
-      setTimeout(() => {
-        this._removeMsgCon();
-        config.callback(this.resMapping);
-      }, 500);
-    }
-  },
-
-  _loadJson(name, desc, src, config) {
-    fetch(src).then(res => {
-      res.json().then(json => {
-        this._checkLoaded(name, desc, config, json);
-      });
-    });
-  },
-
-  _start() {
-    let { text } = this._getMsgContainer();
-    text.innerText = "Before start, we need prepare something...";
-  },
-
-  destory() {
-    this.disable = true;
-    this.count = 0;
+export class Resource {
+  constructor(args) {
     this.index = 0;
-    this.resMapping = {};
-    this._removeMsgCon();
-  },
-
-  load(resources, config) {
+    this.resources = {};
     this.disable = false;
-    if (config.start) {
-      config.start();
-    } else {
-      this._start();
+    this.configArr = args.config;
+    this.count = args.config.length;
+    if (args.loading) {
+      args.loading.game = args.game;
     }
-    this.count = resources.length;
-    this.index = 0;
-    resources.forEach(resource => {
-      switch (resource.type) {
-        case "IMAGE":
-          this._loadImage(resource.name, resource.desc, resource.src, config);
-          break;
-        case "JSON":
-          this._loadJson(resource.name, resource.desc, resource.src, config);
-          break;
-        default:
-          break;
+    this.loading = args.loading || new Loading({ game: args.game });
+  }
+
+  loadImage(src) {
+    return new Promise((resolve, reject) => {
+      try {
+        let img = new Image();
+        img.onload = () => {
+          resolve(img);
+        };
+        img.src = src;
+      } catch (error) {
+        reject(error);
       }
     });
   }
-};
+
+  loadJson(src) {
+    return new Promise((resolve, reject) => {
+      try {
+        fetch(src).then(res => {
+          res.json().then(json => {
+            resolve(json);
+          });
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  loadAudio(src) {
+    return new Promise((resolve, reject) => {
+      try {
+        fetch(src).then(res =>
+          res.arrayBuffer().then(buffer => {
+            resolve(buffer);
+          })
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  loadedEach(resolve, config, resource) {
+    this.index++;
+    this.loading.loaded(config, resource, this.index / this.count);
+    this.resources[config.name] = resource;
+    if (this.index >= this.count) {
+      setTimeout(() => {
+        this.loading.completed(this.resources);
+        resolve(this.resources);
+      }, 500);
+    }
+  }
+
+  load() {
+    return new Promise((resolve, reject) => {
+      try {
+        this.loading.start(this.configArr);
+        this.configArr.forEach(config => {
+          switch (config.type) {
+            case "IMAGE":
+              this.loadImage(config.src).then(resource => {
+                this.loadedEach(resolve, config, resource);
+              });
+              break;
+            case "JSON":
+              this.loadJson(config.src).then(resource => {
+                this.loadedEach(resolve, config, resource);
+              });
+              break;
+            case "AUDIO":
+              this.loadAudio(config.src).then(resource => {
+                this.loadedEach(resolve, config, resource);
+              });
+              break;
+            default:
+              break;
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+}

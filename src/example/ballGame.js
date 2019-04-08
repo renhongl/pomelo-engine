@@ -1,4 +1,4 @@
-import { Sprite, Key, Resource } from "../pomelo-engine/core";
+import { Sprite, Key, Resource, Loading } from "../pomelo-engine/core";
 import BaseExample from "./baseExample";
 
 export class End extends Sprite {
@@ -252,6 +252,65 @@ class MyStick extends Stick {
   }
 }
 
+class LoadingContent extends Sprite {
+  constructor(args) {
+    super(args);
+    this.w = 200;
+    this.h = 20;
+    this.from = 0;
+    this.percentage = 0;
+    this.loadingSpeed = args.loadingSpeed || 10;
+  }
+
+  render(ctx) {
+    ctx.fillStyle = "green";
+    ctx.fillRect(this.x, this.y, this.from, this.h);
+    ctx.strokeStyle = "blue";
+    ctx.rect(this.x, this.y, this.w, this.h);
+    ctx.stroke();
+    ctx.strokeText(
+      Number.parseInt((this.from / this.w) * 100) + "%",
+      this.x + 80,
+      this.y - 10
+    );
+  }
+
+  update() {
+    if (this.from < this.w * this.percentage) {
+      this.from += this.loadingSpeed;
+    }
+    super.update();
+  }
+}
+
+class CusLoading extends Loading {
+  start(configArr) {
+    this.container = this.game.container;
+    this.sceneName = "loadingSc";
+    this.scene = this.game.sceneManager.createScene({
+      name: this.sceneName,
+      x: 0,
+      y: 0,
+      w: this.container.clientWidth,
+      h: this.container.clientHeight
+    });
+    this.loadingContent = new LoadingContent({
+      x: this.container.clientWidth / 2 - 100,
+      y: this.container.clientHeight / 2 - 10
+    });
+    this.scene.addRObj(this.loadingContent);
+    this.game.sceneManager.bringToFront(this.sceneName);
+  }
+
+  loaded(config, source, percentage) {
+    this.loadingContent.percentage = percentage;
+  }
+
+  completed(resources) {
+    this.game.sceneManager.bringToBack(this.sceneName);
+  }
+}
+
 export default class Example extends BaseExample {
   getStick() {
     let stick = new MyStick({
@@ -298,7 +357,6 @@ export default class Example extends BaseExample {
   }
 
   render() {
-    let self = this;
     const config = [
       {
         name: "brickData",
@@ -307,18 +365,21 @@ export default class Example extends BaseExample {
         type: "JSON"
       }
     ];
-    Resource.load(config, {
-      callback(resources) {
-        const { brickData } = resources;
-        self.stick = self.getStick();
-        self.bricks = self.getBricks(brickData);
-        self.ball = self.getBall(self.stick, self.bricks, self.game);
-        self.scene.addRObj(self.stick);
-        for (let i = 0; i < self.bricks.length; i++) {
-          self.scene.addRObj(self.bricks[i]);
-        }
-        self.scene.addRObj(self.ball);
+    let resourceMgmt = new Resource({
+      config,
+      game: this.game,
+      loading: new CusLoading()
+    });
+    resourceMgmt.load().then(resources => {
+      const { brickData } = resources;
+      this.stick = this.getStick();
+      this.bricks = this.getBricks(brickData);
+      this.ball = this.getBall(this.stick, this.bricks, this.game);
+      this.scene.addRObj(this.stick);
+      for (let i = 0; i < this.bricks.length; i++) {
+        this.scene.addRObj(this.bricks[i]);
       }
+      this.scene.addRObj(this.ball);
     });
   }
 }
