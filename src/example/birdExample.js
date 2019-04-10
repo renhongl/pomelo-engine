@@ -7,12 +7,6 @@ const config = [
     desc: "Need some birds...",
     src: "./images/bird.png",
     type: "IMAGE"
-  },
-  {
-    name: "world",
-    desc: "Creating awesome world...",
-    src: "./images/bg.jpg",
-    type: "IMAGE"
   }
 ];
 
@@ -31,7 +25,6 @@ export default class Example extends BaseExample {
   render() {
     let resourceMgmt = new Resource({ config, game: this.game });
     resourceMgmt.load().then(resources => {
-      this.scene.setBGImg(resources.world, 1);
       let runFrames = new Frames({
         name: "b_run",
         img: resources.bird

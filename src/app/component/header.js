@@ -9,6 +9,8 @@ import Popover from "@material-ui/core/Popover";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 
 export default class Header extends React.Component {
   state = {
@@ -56,7 +58,8 @@ export default class Header extends React.Component {
       filter,
       updateFilter,
       searchResult,
-      onNavClick
+      onNavClick,
+      changeDocNumber
     } = this.props;
     return (
       <AppBar
@@ -87,7 +90,7 @@ export default class Header extends React.Component {
                 >
                   <CardContent>
                     <Typography variant="h6" component="h6">
-                      {item.name}
+                      {item.name || item.title}
                     </Typography>
                     <Typography className={classes.pos} color="textSecondary">
                       {item.type}
@@ -98,9 +101,15 @@ export default class Header extends React.Component {
                     <Button
                       size="small"
                       onClick={e => {
-                        changePage(2);
-                        this.handleClose();
-                        onNavClick(item.index);
+                        if (item.type === "Example") {
+                          changePage(2);
+                          this.handleClose();
+                          onNavClick(item.index);
+                        } else {
+                          changePage(3);
+                          this.handleClose();
+                          changeDocNumber(item.index);
+                        }
                       }}
                     >
                       Read More
@@ -125,6 +134,13 @@ export default class Header extends React.Component {
               title
             )}
           </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            className="example-header-menu"
+          >
+            <MenuIcon />
+          </IconButton>
           <div className={classes.grow} />
           <div className={classes.search}>
             <div className={classes.searchIcon}>

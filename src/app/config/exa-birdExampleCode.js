@@ -1,39 +1,7 @@
 export default `
 \`\`\`js
-import { Game, Frames, Animations, Resource, Sprite } from "../pomelo-engine/core";
+import { Frames, Animations, Resource, Sprite } from "../pomelo-engine/core";
 import BaseExample from "./baseExample";
-
-export default class BaseExample {
-  constructor(container) {
-    this.container = container;
-  }
-
-  init() {
-    let w = this.container.offsetWidth;
-    let h = this.container.offsetHeight;
-    this.game = new Game({ container: this.container });
-    this.scene = this.game.sceneManager.createScene({
-      name: "title",
-      x: 0,
-      y: 0,
-      w,
-      h
-    });
-    this.game.showFrames();
-    this.game.run(60);
-    this.render();
-  }
-
-  render() {}
-
-  destory() {}
-
-  stopGame() {
-    this.game.stop();
-    this.game.sceneManager.clearAll();
-    this.destory();
-  }
-}
 
 const config = [
   {
@@ -41,18 +9,6 @@ const config = [
     desc: "Need some birds...",
     src: "./images/bird.png",
     type: "IMAGE"
-  },
-  {
-    name: "world",
-    desc: "Creating awesome world...",
-    src: "./images/bg.jpg",
-    type: "IMAGE"
-  },
-  {
-    name: "json",
-    desc: "Getting nice knowloadge...",
-    src: "./data/config.json",
-    type: "JSON"
   }
 ];
 
@@ -68,12 +24,9 @@ export class Bird extends Sprite {
 }
 
 export default class Example extends BaseExample {
-  destory() {
-    Resource.destory();
-  }
   render() {
-    const callback = resources => {
-      this.scene.setBGImg(resources.world, 1);
+    let resourceMgmt = new Resource({ config, game: this.game });
+    resourceMgmt.load().then(resources => {
       let runFrames = new Frames({
         name: "b_run",
         img: resources.bird
@@ -87,13 +40,10 @@ export default class Example extends BaseExample {
       bird.setAnimSpeed(0.5);
       bird.setAnims(anims, "run");
       this.scene.addRObj(bird);
-    };
-
-    Resource.load(config, {
-      callback: callback
     });
   }
 }
+
 
 \`\`\`
 `;

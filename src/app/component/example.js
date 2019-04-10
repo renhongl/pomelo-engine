@@ -68,7 +68,7 @@ export default class Example extends React.Component {
     return (
       <React.Fragment>
         <Drawer
-          className={classes.drawer}
+          className="example-drawer"
           variant="permanent"
           classes={{
             paper: classes.drawerPaper

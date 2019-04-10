@@ -6,7 +6,7 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 
 import "../pomelo-engine/styles.css";
 import "../style.css";
-import { exampleListDetail } from "./config/global";
+import { exampleListDetail, docsDetail } from "./config/global";
 
 import Example from "./component/example";
 import Header from "./component/header";
@@ -117,10 +117,12 @@ class PermanentDrawerLeft extends React.Component {
     this.setState({
       filter: e.target.value
     });
-    clearTimeout(this.searchTimer);
-    this.searchTimer = setTimeout(() => {
-      this.updateResult();
-    }, 1000);
+    if (e.target.value !== "") {
+      clearTimeout(this.searchTimer);
+      this.searchTimer = setTimeout(() => {
+        this.updateResult();
+      }, 1000);
+    }
   };
 
   getExample(index) {
@@ -173,6 +175,23 @@ class PermanentDrawerLeft extends React.Component {
     }
   };
 
+  searchDoc(source, target, indexPre) {
+    Object.keys(source).forEach(key => {
+      source[key].index = indexPre ? indexPre + "-" + key : key;
+      source[key].type = "Document";
+      if (
+        source[key].title
+          .toUpperCase()
+          .includes(this.state.filter.toUpperCase())
+      ) {
+        target.push(source[key]);
+      }
+      if (Object.keys(source[key].children).length > 0) {
+        this.searchDoc(source[key].children, target, key);
+      }
+    });
+  }
+
   updateResult = () => {
     exampleListDetail.forEach((item, index) => {
       item.index = index;
@@ -181,6 +200,8 @@ class PermanentDrawerLeft extends React.Component {
     let result = exampleListDetail.filter(item =>
       item.name.toUpperCase().includes(this.state.filter.toUpperCase())
     );
+    this.searchDoc(docsDetail, result);
+    console.log(result);
     this.setState({
       searchResult: result
     });
@@ -209,6 +230,7 @@ class PermanentDrawerLeft extends React.Component {
           changePage={this.changePage}
           searchResult={searchResult}
           onNavClick={this.onNavClick}
+          changeDocNumber={this.changeDocNumber}
         />
         {page === "example" ? (
           <Example
