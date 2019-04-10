@@ -104,7 +104,7 @@ export default class Example extends React.Component {
         </Drawer>
         <div className="example-content">
           <div className="default-example-view">
-            <img src="./images/loading.gif" />
+            <img src="./images/loading.gif" alt="loading..." />
           </div>
         </div>
         {this.state.showCode ? (
