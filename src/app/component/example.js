@@ -103,7 +103,9 @@ export default class Example extends React.Component {
           </List>
         </Drawer>
         <div className="example-content">
-          <div className="default-example-view">Select to view example</div>
+          <div className="default-example-view">
+            <img src="./images/loading.gif" />
+          </div>
         </div>
         {this.state.showCode ? (
           <Popover
