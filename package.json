@@ -2,9 +2,16 @@
   "name": "pomelo-engine",
   "version": "1.0.6",
   "description": "",
-  "keywords": [],
   "main": "index.js",
   "homepage": "https://renhongl.github.io/pomelo-engine",
+  "keywords": [
+    "game",
+    "html5",
+    "2d",
+    "javascript",
+    "engine"
+  ],
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
